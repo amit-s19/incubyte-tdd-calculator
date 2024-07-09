@@ -32,4 +32,15 @@ describe('StringCalculator', () => {
         expect(add("//sep\n1sep2")).toBe(3);
         expect(add("//[***]\n1***2***3")).toBe(6);
     });
+
+    test('should throw an exception for negative numbers', () => {
+        expect(() => add("1,-2,3,-4")).toThrow("Negative numbers not allowed: -2, -4");
+        expect(() => add("-1")).toThrow("Negative numbers not allowed: -1");
+    });
+
+    test('should throw an exception with all negative numbers listed', () => {
+        expect(() => add("-1,-2,-3")).toThrow("Negative numbers not allowed: -1, -2, -3");
+        expect(() => add("-10,-20,-30")).toThrow("Negative numbers not allowed: -10, -20, -30");
+    });
+
 });
