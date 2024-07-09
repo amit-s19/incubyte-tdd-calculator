@@ -19,4 +19,11 @@ describe('StringCalculator', () => {
         expect(add("1,2,3,4,5")).toBe(15);
         expect(add("10,20,30,40,50")).toBe(150);
     });
+
+    test('should handle new lines between numbers', () => {
+        expect(add("1\n2,3")).toBe(6);
+        expect(add("1\n2\n3")).toBe(6);
+        expect(add("1,\n")).toBe(1); // Handle a number followed by new line and comma
+    });
+
 });

@@ -3,7 +3,9 @@
 export function add(numbers: string): number {
     if (numbers === "") return 0;
 
-    const numberArray = numbers.split(',');
+    let delimiter = /,|\n/;
+
+    const numberArray = numbers.split(delimiter);
     let sum = 0;
 
     for (const num of numberArray) {
