@@ -26,4 +26,10 @@ describe('StringCalculator', () => {
         expect(add("1,\n")).toBe(1); // Handle a number followed by new line and comma
     });
 
+    test('should handle different delimiters', () => {
+        expect(add("//;\n1;2")).toBe(3);
+        expect(add("//|\n1|2|3")).toBe(6);
+        expect(add("//sep\n1sep2")).toBe(3);
+        expect(add("//[***]\n1***2***3")).toBe(6);
+    });
 });
