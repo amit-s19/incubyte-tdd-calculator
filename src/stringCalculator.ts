@@ -1,17 +1,33 @@
 // src/stringCalculator.ts
 
-export function add(numbers: string): number {
-    if (numbers === "") return 0;
+/*@desc helper function to extract delimiter from the input string
+*@param {string} input - a string representing the list of numbers, eg . 1,3,5,6,1,3,-5,4,-4
+*@returns {Object} - an object containing the delimiter as well as delimeter sliced input string.
+*/
+function extractDelimiter(input: string): { delimiter: RegExp, numbers: string } {
+    let delimiter: RegExp = /,|\n/;
+    let numbers = input;
 
-    let delimiter = /,|\n/;
-    if (numbers.startsWith("//")) {
-        const delimiterEndIndex = numbers.indexOf("\n");
-        delimiter = new RegExp(numbers.substring(2, delimiterEndIndex));
-        numbers = numbers.substring(delimiterEndIndex + 1);
+    if (input.startsWith("//")) {
+        const delimiterEndIndex = input.indexOf("\n");
+        delimiter = new RegExp(input.substring(2, delimiterEndIndex));
+        numbers = input.substring(delimiterEndIndex + 1);
     }
 
+    return { delimiter, numbers };
+}
+
+/*@desc A function to add or multiply an array of numbers
+*@param {string} input - a string representing the list of numbers, eg . 1,3,5,6,1,3,-5,4,-4
+*@returns {number}
+*/
+export function addOrMultiply(input: string): number {
+    if (input === "") return 0;
+
+    const { delimiter, numbers } = extractDelimiter(input);
     const numberArray = numbers.split(delimiter);
-    let sum = 0;
+
+    let val = delimiter.test("[*]") ? 1 : 0;
     let negatives: number[] = [];
 
     for (const num of numberArray) {
@@ -20,7 +36,7 @@ export function add(numbers: string): number {
         if (parsedNum < 0) {
             negatives.push(parsedNum);
         } else {
-            sum += parsedNum;
+            val = delimiter.test("[*]") ? val * parsedNum : val + parsedNum;
         }
     }
 
@@ -28,5 +44,5 @@ export function add(numbers: string): number {
         throw new Error(`Negative numbers not allowed: ${negatives.join(", ")}`);
     }
 
-    return sum;
+    return val;
 }
